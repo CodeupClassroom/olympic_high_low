@@ -2,13 +2,15 @@
 // input
 // user guess
 $random = 10;
-$guess = 8;
+$guess = 12;
 
 // process
 if ($guess == $random) {
     $message = 'GUESS!';
 } elseif ($guess < $random) {
     $message = 'HIGHER';
+} else {
+    $message = 'LOWER';
 }
 
 // output
