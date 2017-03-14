@@ -2,7 +2,9 @@
 // input
 // user guess
 $random = 10;
-$guess = 12;
+
+fwrite(STDOUT, 'Guess the number' . PHP_EOL);
+$guess = trim(fgets(STDIN));
 
 // process
 if ($guess == $random) {
