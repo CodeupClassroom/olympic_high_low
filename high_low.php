@@ -1,7 +1,7 @@
 <?php
 // input
 // user guess
-$random = 10;
+$random = mt_rand(1, 100);
 
 do {
     fwrite(STDOUT, 'Guess the number' . PHP_EOL);
