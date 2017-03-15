@@ -1,7 +1,10 @@
 <?php
 // input: starting and a ending value
-$starting = 10;
-$ending = 15;
+fwrite(STDOUT, 'Enter a starting number' . PHP_EOL);
+$starting = trim(fgets(STDIN));
+
+fwrite(STDOUT, 'Enter an ending number' . PHP_EOL);
+$ending = trim(fgets(STDIN));
 
 // process: show the numbers between the starting and ending values
 // output:
