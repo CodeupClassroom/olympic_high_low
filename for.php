@@ -6,6 +6,9 @@ $starting = trim(fgets(STDIN));
 fwrite(STDOUT, 'Enter an ending number' . PHP_EOL);
 $ending = trim(fgets(STDIN));
 
+fwrite(STDOUT, 'Enter an increment value' . PHP_EOL);
+$increment = trim(fgets(STDIN));
+
 // process: show the numbers between the starting and ending values
 // output:
 for (
@@ -14,7 +17,7 @@ for (
     /* condition to continue*/
     $i <= $ending;
     /* increment / counter*/
-    $i += 1
+    $i += $increment
 ) {
     fwrite(STDOUT, $i . PHP_EOL);
 }
