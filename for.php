@@ -6,10 +6,11 @@ $start = trim(fgets(STDIN));
 fwrite(STDOUT, 'Enter the end of the range: ');
 $end = trim(fgets(STDIN));
 
-//  process: modulus
 /*initialization*/
 for ($i = $start; $i <= $end ;$i++) {
-    echo $i, PHP_EOL;
+    //  process: modulus
+    if ($i % 2 === 0) {
+        // output: only even numbers
+        echo $i, PHP_EOL;
+    }
 }
-
-// output: only even numbers
