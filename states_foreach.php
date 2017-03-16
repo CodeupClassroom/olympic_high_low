@@ -88,13 +88,11 @@ echo PHP_EOL;
 
 echo "States without the letter 'a' in their name:" . PHP_EOL;
 foreach($states as $state) {
-	if(strpos($state, "a") === false || (strpos($state, "A"))) {
+	if(strpos($state, "a") === false || (strpos($state, "A")) === false) {
 		echo "\t" . $state . PHP_EOL;
 	}
 }
 echo PHP_EOL;
-
-
 
 $vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
 
