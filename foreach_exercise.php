@@ -11,10 +11,14 @@ $things = array('Sgt. Pepper', "11", null, array(1,2,3), 3.14, "12 + 7", false, 
 
 foreach ($things as $thing) {
     if (is_array($thing)) {
-        echo 'Array ( ';
-        foreach ($thing as $innerThing) {
+        echo 'Array (';
+        foreach ($thing as $i => $innerThing) {
             // echo = language construct
-            echo $innerThing, ' ';
+            if ($i === count($thing) - 1) {
+                echo $innerThing;
+            } else {
+                echo $innerThing, ', ';
+            }
         }
         echo ')', PHP_EOL;
     } else {
