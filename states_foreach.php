@@ -113,6 +113,16 @@ foreach ($statesStartingAndEndingWithVowels as $statesStartingAndEndingWithVowel
 // call the array $statesWithMoreThanOneWordNames
 // echo "These are the states with more than one word in their name"
 // then echo each state name below
+$statesWithMoreThanOneWordNames = [];
+foreach ($states as $state) {
+    if (strpos($state, ' ') !== false) {
+        array_push($statesWithMoreThanOneWordNames, $state);
+    }
+}
+echo "These are the states with more than one word in their name", PHP_EOL;
+foreach ($statesWithMoreThanOneWordNames as $statesWithMoreThanOneWordName) {
+    echo $statesWithMoreThanOneWordName, PHP_EOL;
+}
 
 // use a foreach to construct a new array of all the states with "North" "East" "South" or "West"
 // call the array $arrayOfCardinalStates
