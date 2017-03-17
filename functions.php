@@ -1,12 +1,9 @@
 <?php
 
 
-function sayHello($input) {
+function sayHello($input = "Bob") {
 	return "Hi there, $input!" . PHP_EOL;
 }
-
-$input = "Bob";
-// 
 
 $name = "Luis";
 echo sayHello($name);
@@ -14,3 +11,5 @@ echo sayHello($name);
 $name = "Ryan";
 echo sayHello($name);
 
+
+echo sayHello();
