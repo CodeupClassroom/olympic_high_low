@@ -54,13 +54,10 @@ function showContacts($filename)
 
 }
 
-// Testing showContacts() output.
-
-showContacts("contacts.txt");
-
 // Adds a new contact to a specified file
 function addNewContact($filename, $name, $number)
 {
+
 
 }
 
@@ -68,7 +65,29 @@ function addNewContact($filename, $name, $number)
 function showContact($filename, $name)
 {
 
+    // Call parseContacts to get an updated array of contacts
+
+    $contacts = parseContacts($filename);
+
+    // Iterate over each contact and search for matching results
+
+    foreach ($contacts as $contactsArray) {
+        
+        if (is_numeric(strpos($contactsArray['name'], trim($name))) !== false ) {
+            echo "\n\n\n-------------CONTACTS-------------\n\n";
+            echo "Name            |     Phone Number" . PHP_EOL;
+            echo "----------------------------------" . PHP_EOL;
+            echo str_pad($contactsArray['name'], 16) . "|" . "     " . $contactsArray['number'] . "\n\n\n";
+        }
+    }
 }
+
+// Test showContact()
+
+echo "Please enter a name to search for: ";
+$name = fgets(STDIN);
+showContact("contacts.txt", $name);
+
 
 // Deletes contacts that match a given string
 function deleteContact($filename, $name)
