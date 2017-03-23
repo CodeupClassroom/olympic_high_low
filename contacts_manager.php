@@ -28,84 +28,201 @@ function parseContacts($filename)
     return $contacts;
 }
 
-// Displays all contacts to the command line
+
 function showContacts($filename)
 {
-
-    // clear cache for updated results in real time
-
-    clearstatcache();
-
-    // Call parseContacts function to grab an array of all contacts in a given file
-
+    clearstatcache(); // clears out cached version of the file
     $contacts = parseContacts($filename);
 
-    // echo out template for a pretty display to the command line
-
-    echo "-------------CONTACTS-----------\n\n";
-    echo "Name             |  Phone Number" . PHP_EOL;
-    echo "--------------------------------" . PHP_EOL;
-
-    // Iterate over each contact and display with correct formatting
-
+    echo "------------CONTACTS------------\n\n";
+    echo "Name           |    Phone Number" . PHP_EOL;
+    echo "--------------------------------\e[36m" . PHP_EOL;
     foreach($contacts as $contactArray) {
+
+
         echo str_pad($contactArray['name'], 15) . "|" . "    " . $contactArray['number'] . PHP_EOL;
     }
-
+    echo "\e[39m";
 }
 
-// Adds a new contact to a specified file
+
 function addNewContact($filename, $name, $number)
 {
+    $file = $filename;
+    $handle = fopen($file, 'a');
 
+    $entry = trim($name) . "|" . trim($number);
 
+    fwrite($handle, PHP_EOL . $entry);
+
+    echo "\nContact added successfully.\n";
+
+    fclose($handle);
 }
 
-// Shows a specific contact based on a given string
+
 function showContact($filename, $name)
 {
 
-    // Call parseContacts to get an updated array of contacts
+    $contactsArray = parseContacts($filename);
 
-    $contacts = parseContacts($filename);
-
-    // Iterate over each contact and search for matching results
-
-    foreach ($contacts as $contactsArray) {
-        
-        if (is_numeric(strpos($contactsArray['name'], trim($name))) !== false ) {
-            echo "\n\n\n-------------CONTACTS-------------\n\n";
-            echo "Name            |     Phone Number" . PHP_EOL;
-            echo "----------------------------------" . PHP_EOL;
-            echo str_pad($contactsArray['name'], 16) . "|" . "     " . $contactsArray['number'] . "\n\n\n";
-        }
+    foreach ($contactsArray as $contact) {
+        if (is_numeric(strpos($contact['name'], $name)) !== false) {
+            echo "\n\n\n------------CONTACTS------------\n\n";
+            echo "Name           |    Phone Number" . PHP_EOL;
+            echo "--------------------------------" . PHP_EOL;
+            echo str_pad($contact['name'], 15) . "|" . "    " . $contact['number'] . "\n\n\n";
+        } 
     }
+
 }
 
-// Test showContact()
-
-echo "Please enter a name to search for: ";
-$name = fgets(STDIN);
-showContact("contacts.txt", $name);
 
 
-// Deletes contacts that match a given string
+
+
+
+
+
+
+
+
+
 function deleteContact($filename, $name)
 {
+    $contactsArray = parseContacts($filename);
+
+    foreach ($contactsArray as $contact) {
+        if (is_numeric(strpos($contact['name'], $name)) !== false) {
+            $contactFound = true;
+            break;
+        }
+    }
+
+    if ($contactFound == true) {
+        // Truncate the file and rewrite all entries except entry to delete
+        $handle = fopen($filename, 'w');
+
+        foreach ($contactsArray as $contact) {
+            if (is_numeric(strpos($contact['name'], $name)) == false) {
+
+                $plainNumber = substr($contact['number'], 0, 3) . substr($contact['number'], 4, 3) . substr($contact['number'], 8);
+                
+                fwrite($handle, PHP_EOL . $contact['name'] . "|" . $plainNumber);
+            }
+        }
+
+        fclose($handle);
+
+        echo "\n\e[31mCONTACT DELETED!\e[39m\n\n\n";
+        
+    } else {
+        echo "No contact found by that name.\n";
+    }
+
+    showContacts($filename);
 
 }
 
-// Displays menu options to the user and validates a correct selection
+
 function mainMenuSelect()
 {
+    $selection = 0;
 
+    while (!is_numeric($selection) || $selection < 1 || $selection > 5) {
+
+        echo "\n\n1) View contacts" . PHP_EOL;
+        echo "2) Add contact" . PHP_EOL;
+        echo "3) Search contact by name" . PHP_EOL;
+        echo "4) Delete contact" . PHP_EOL;
+        echo "5) Exit" . PHP_EOL;
+        echo "\nPlease enter a number to select an action: ";
+        $selection = (int) fgets(STDIN);
+        echo "\n\n";
+
+    }
+
+    return $selection;
+    
 }
 
-// Contains conditional logic based on a user menu choice 
-// Gets user input if needed, and calls specific functions passing in the input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function runApp($filename)
 {
+    echo "\n\n================================\n";
+    echo "       Contacts Manager App         " . PHP_EOL;
+    echo "================================\n\n\n";
+
+    $choice = 0;
+
+    showContacts($filename);
+
+    while ($choice != 5) {
+
+        $choice = mainMenuSelect();
+        $contactName = "";
+        $contactNumber = "";
+
+        switch ($choice) {
+            case 1 : 
+                showContacts($filename);
+                break;
+            case 2 :
+                echo "Please enter a new contact name: ";
+                $contactName = fgets(STDIN);
+                echo "Please enter the new contact number: ";
+                $contactNumber = fgets(STDIN);
+                addNewContact($filename, $contactName, $contactNumber);
+                break;
+            case 3 : 
+                echo "Please enter a contact name to view: ";
+                $contactName = trim(fgets(STDIN));
+                showContact($filename, $contactName);
+                break;
+            case 4 :
+                echo "Please enter a contact name to delete: ";
+                $contactName = trim(fgets(STDIN));
+                deleteContact($filename, $contactName);
+                break;
+            case 5 :
+                break;
+        }
+
+    }
+
+    echo "GOODBYE!!\n\n";
 
 }
 
-// runApp("contacts.txt");
+runApp("contacts.txt");
